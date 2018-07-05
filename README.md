@@ -62,6 +62,11 @@ $ heroku config:set LINE_CHANNEL_TOKEN=*****
 $ git push heroku master
 ```
 
+8. heroku上のログを確認する
+```
+$ heroku logs --tail
+```
+
 # LINE Developerコンソールの設定
 LINE DeveloperコンソールのChannel基本設定から、以下を設定。
 

@@ -15,7 +15,7 @@ Rails 5.1.4
 # Webhook環境の構築
 1. リポジトリをクローンする。
 ```
-git clone git@github.com:giftee/intern-line-bot.git
+git clone git@github.com:dev-intern/intern-line-bot.git
 ```
 
 2. Herokuにログインする。

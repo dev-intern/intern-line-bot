@@ -27,7 +27,7 @@ class WebhookController < ApplicationController
     res = http.request(req)
     puts res.code, res.msg
     api_response = JSON.parse(res.body)
-    puts api_response['horoscope']
+    puts api_response['horoscope']["#{today.year}/#{today.month}/#{today.day}"]
       # puts item['sign'], item['rank']
     # api_response['droplets'].each do |item|
     #   puts item['sign'], item['rank']

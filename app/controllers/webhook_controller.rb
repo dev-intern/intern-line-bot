@@ -28,6 +28,7 @@ class WebhookController < ApplicationController
     api_response = JSON.parse(res.body)
     api_response["horoscope"]["#{today}"].each do |index|
       puts index["sign"], index["rank"]
+    end
     # puts api_response["horoscope"].dig(:#{today}, :sign)
       # if key == #{today} then
       #   puts value["sign"], value["rank"]

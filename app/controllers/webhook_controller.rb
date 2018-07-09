@@ -26,8 +26,8 @@ class WebhookController < ApplicationController
     
     res = http.request(req)
     api_response = JSON.parse(res.body)
-    puts api_response["horoscope"]["#{today}"]["sign"]
-    puts api_response["horoscope"]["#{today}"]["rank"].to_s
+    api_response["horoscope"]["#{today}"].each do |key, value|
+      puts key, value
     # puts api_response["horoscope"].dig(:#{today}, :sign)
       # if key == #{today} then
       #   puts value["sign"], value["rank"]

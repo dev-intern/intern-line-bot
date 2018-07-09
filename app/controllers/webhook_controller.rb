@@ -15,6 +15,7 @@ class WebhookController < ApplicationController
   
   
   def fortune
+    ranking = {}
     today = Date.today.strftime('%Y/%m/%d')
     
     fortune_url = "http://api.jugemkey.jp/api/horoscope/free/#{today}"

@@ -24,15 +24,18 @@ class WebhookController < ApplicationController
       when Line::Bot::Event::Message
         case event.type
         when Line::Bot::Event::MessageType::Text
-          message = {
-            type: 'text',
-            text: "今日はいい日だね"
-          }
+          if event.message['text'] == "乙女座は何位？" then
+            message = {
+              type: 'text',
+              text: "1位だよ！いい日になるよ！"
+            }
+          else
+            message = {
+              type: 'text',
+              text: "どうだろう？たぶん悪くはないよ"
+            }
+          end
           client.reply_message(event['replyToken'], message)
-        when Line::Bot::Event::MessageType::Image, Line::Bot::Event::MessageType::Video
-          response = client.get_message_content(event.message['id'])
-          tf = Tempfile.open("content")
-          tf.write(response.body)
         end
       end
     }

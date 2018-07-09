@@ -17,7 +17,7 @@ class WebhookController < ApplicationController
   def fortune
     today = Date.today
     
-    fortune_url = 'http://api.jugemkey.jp/api/horoscope/free/#{today.year}/#{today.month}/#{today.day}'
+    fortune_url = "http://api.jugemkey.jp/api/horoscope/free/#{today.year}/#{today.month}/#{today.day}"
 
     uri = URI.parse(fortune_url)
     http = Net::HTTP.new(uri.host, uri.port)

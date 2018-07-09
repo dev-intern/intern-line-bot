@@ -25,9 +25,11 @@ class WebhookController < ApplicationController
     req = Net::HTTP::Get.new(uri.request_uri)
     
     res = http.request(req)
+    puts fortune_url
     puts res.code, res.msg
     api_response = JSON.parse(res.body)
-    puts api_response['horoscope']["#{today.year}/#{today.month}/#{today.day}"]
+    puts api_response['horoscope'].each do |daily|
+      puts daily["#{today.year}/#{today.month}/#{today.day}"]
       # puts item['sign'], item['rank']
     # api_response['droplets'].each do |item|
     #   puts item['sign'], item['rank']

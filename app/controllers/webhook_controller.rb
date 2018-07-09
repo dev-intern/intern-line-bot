@@ -27,8 +27,11 @@ class WebhookController < ApplicationController
     res = http.request(req)
     api_response = JSON.parse(res.body)
     api_response["horoscope"]["#{today}"].each do |index|
-      puts index["sign"], index["rank"]
+      rainking = {
+        index["rank"]: index["sign"]
+      }    
     end
+    return ranking
     # puts api_response["horoscope"].dig(:#{today}, :sign)
       # if key == #{today} then
       #   puts value["sign"], value["rank"]
@@ -53,18 +56,10 @@ class WebhookController < ApplicationController
       when Line::Bot::Event::Message
         case event.type
         when Line::Bot::Event::MessageType::Text
-          fortune
-          if event.message['text'] == "乙女座は何位？" then
-            message = {
-              type: 'text',
-              text: "1位だよ！いい日になるよ！"
-            }
-          else
-            message = {
-              type: 'text',
-              text: "どうだろう？たぶん悪くはないよ"
-            }
-          end
+          message = {
+            type: 'text',
+            text: fortune
+          }
           client.reply_message(event['replyToken'], message)
         end
       end

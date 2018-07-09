@@ -15,9 +15,9 @@ class WebhookController < ApplicationController
   
   
   def fortune
-    today = Date.today
+    today = Date.today.strftime('%Y/%m/%d')
     
-    fortune_url = "http://api.jugemkey.jp/api/horoscope/free/#{today.year}/#{today.month}/#{today.day}"
+    fortune_url = "http://api.jugemkey.jp/api/horoscope/free/#{today}"
 
     uri = URI.parse(fortune_url)
     http = Net::HTTP.new(uri.host, uri.port)
@@ -27,7 +27,7 @@ class WebhookController < ApplicationController
     res = http.request(req)
     api_response = JSON.parse(res.body)
     puts api_response
-    puts "#{today.year}/#{today.month}/#{today.day}"
+    puts "#{today}"
     # api_response["horoscope"].each do |key, value|
     #   if key == "#{today.year}/#{today.month}/#{today.day}" then
     #     puts value["sign"], value["rank"]

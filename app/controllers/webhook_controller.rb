@@ -26,7 +26,8 @@ class WebhookController < ApplicationController
     
     res = http.request(req)
     puts res.code, res.msg
-    # api_response = JSON.parse(res.body)
+    api_response = JSON.parse(res.body)
+    puts api_response
     # api_response['droplets'].each do |item|
     #   puts item['sign'], item['rank']
     

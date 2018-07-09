@@ -15,7 +15,7 @@ Rails 5.1.4
 # Webhook環境の構築
 1. リポジトリをクローンする。
 ```
-git clone git@github.com:giftee/intern-line-bot.git
+git clone git@github.com:dev-intern/intern-line-bot.git
 ```
 
 2. Herokuにログインする。
@@ -60,6 +60,11 @@ $ heroku config:set LINE_CHANNEL_TOKEN=*****
 7. シークレット情報の変更をherokuに反映させる。
 ```
 $ git push heroku master
+```
+
+8. heroku上のログを確認する
+```
+$ heroku logs --tail
 ```
 
 # LINE Developerコンソールの設定

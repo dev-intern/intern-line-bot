@@ -27,7 +27,9 @@ class WebhookController < ApplicationController
     res = http.request(req)
     api_response = JSON.parse(res.body)
     api_response["horoscope"]["#{today}"].each do |index|
-      ranking.store(index["sign"], index["rank"])
+      ranking = {
+        index["sign"].to_sym: index["rank"]
+      }
     end
     return ranking
     # puts api_response["horoscope"].dig(:#{today}, :sign)

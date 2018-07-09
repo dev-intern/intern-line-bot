@@ -28,7 +28,7 @@ class WebhookController < ApplicationController
     puts fortune_url
     puts res.code, res.msg
     api_response = JSON.parse(res.body)
-    puts api_response['horoscope'].each do |daily|
+    api_response['horoscope'].each do |daily|
       puts daily["#{today.year}/#{today.month}/#{today.day}"]
       # puts item['sign'], item['rank']
     # api_response['droplets'].each do |item|

@@ -29,7 +29,7 @@ class WebhookController < ApplicationController
     puts res.code, res.msg
     api_response = JSON.parse(res.body)
     api_response["horoscope"].each do |daily|
-      daily["#{today.year}/#{today.month}/#{today.day}"].each do |item|
+      daily["2018/07/9"].each do |item|
         puts item["sign"], item["rank"]
       # puts item['sign'], item['rank']
     # api_response['droplets'].each do |item|

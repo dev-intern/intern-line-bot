@@ -26,7 +26,7 @@ class WebhookController < ApplicationController
     
     res = http.request(req)
     api_response = JSON.parse(res.body)
-    puts api_response["horoscope"].each do |key, value|
+    api_response["horoscope"].each do |key, value|
       if key == "#{today.year}/#{today.month}/#{today.day}" then
         puts value["sign"], value["rank"]
       # daily["2018/07/9"].each do |item|

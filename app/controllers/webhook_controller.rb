@@ -16,9 +16,15 @@ class WebhookController < ApplicationController
   
   def fortune(rank_frag, period)
     url = "http://api.jugemkey.jp/api/horoscope/free/"
-    date = Date.period.strftime('%Y/%m/%d')
+    date = Date.today
+    if date == "yesterday" then
+      date = date.yesterday
+    else
+      date = date.tomorrow
+    end
+    today = date.strftime('%Y/%m/%d')
     
-    fortune_url = "#{url}#{date}"
+    fortune_url = "#{url}#{today}"
 
     uri = URI.parse(fortune_url)
     http = Net::HTTP.new(uri.host, uri.port)
@@ -30,12 +36,12 @@ class WebhookController < ApplicationController
     
     if rank_frag == 1 then
       ranking = {}
-      api_response["horoscope"]["#{date}"].each do |index|
+      api_response["horoscope"]["#{today}"].each do |index|
         ranking[index["rank"].to_s.to_sym] = index["sign"]
       end
     else
       ranking = {}
-      api_response["horoscope"]["#{date}"].each do |index|
+      api_response["horoscope"]["#{today}"].each do |index|
         ranking[index["sign"].to_sym] = {}
         ranking[index["sign"].to_sym][:"rank"] = index["rank"]
         ranking[index["sign"].to_sym][:"content"] = index["content"]
@@ -66,12 +72,18 @@ class WebhookController < ApplicationController
           if event.message['text'].include?("昨日") then
             date = "yesterday"
           elsif event.message['text'].include?("明日") then
-            date = "tommorow"
+            date = "tomorrow"
           else
             date = "today"
           end
           if event.message['text'].include?("ランキング") then
-            period = Date.date.strftime("%m月%d日")
+            if date == "yesterday" then
+              period = Date.today.yesterday.strftime("%m月%d日")
+            elsif date == "tomorrow" then
+              period = Date.today.tomorrow.strftime("%m月%d日")
+            else
+              period = Date.today.strftime("%m月%d日")
+            end
             cookie = fortune(1, date)
             result = "#{period}のランキングだよ！︎"
             (1..12).each do |n|

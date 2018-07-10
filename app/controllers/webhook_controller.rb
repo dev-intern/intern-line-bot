@@ -64,11 +64,11 @@ class WebhookController < ApplicationController
         when Line::Bot::Event::MessageType::Text
           choice = ["牡羊座", "牡牛座", "双子座", "蟹座", "獅子座", "乙女座", "天秤座", "蠍座", "射手座", "山羊座", "水瓶座", "魚座"]
           if event.message['text'].include?("昨日") then
-            date = yesterday
+            date = "yesterday"
           elsif event.message['text'].include?("明日") then
-            date = tommorow
+            date = "tommorow"
           else
-            date = today
+            date = "today"
           end
           if event.message['text'].include?("ランキング") then
             period = Date.date.strftime("%m月%d日")

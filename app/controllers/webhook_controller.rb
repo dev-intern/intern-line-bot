@@ -1,4 +1,7 @@
 require 'line/bot'
+require 'net/https'
+require 'uri'
+require 'date'
 
 class WebhookController < ApplicationController
   protect_from_forgery with: :null_session # CSRF対策無効化
@@ -9,6 +12,31 @@ class WebhookController < ApplicationController
       config.channel_token = ENV["LINE_CHANNEL_TOKEN"]
     }
   end
+  
+  
+  def fortune
+    url = "http://api.jugemkey.jp/api/horoscope/free/"
+    today = Date.today.strftime('%Y/%m/%d')
+    
+    fortune_url = "#{url}#{today}"
+
+    uri = URI.parse(fortune_url)
+    http = Net::HTTP.new(uri.host, uri.port)
+    
+    req = Net::HTTP::Get.new(uri.request_uri)
+    
+    res = http.request(req)
+    api_response = JSON.parse(res.body)
+    
+    ranking = {}
+    api_response["horoscope"][today].each do |index|
+      ranking[index["rank"].to_s.to_sym] = index["sign"]
+    end
+    
+    return ranking
+    
+  end
+  
 
   def callback
     body = request.body.read
@@ -24,15 +52,20 @@ class WebhookController < ApplicationController
       when Line::Bot::Event::Message
         case event.type
         when Line::Bot::Event::MessageType::Text
+          if event.message['text'].include?("ランキング") then
+            cookie = fortune
+            result = "今日のランキングだよ！︎"
+            (1..12).each do |n|
+              result << "\n#{n}位\t#{cookie[n.to_s.to_sym]}"
+            end
+          else
+            result = "ランキングのことしか分からないよ"
+          end
           message = {
             type: 'text',
-            text: event.message['text']
+            text: result
           }
           client.reply_message(event['replyToken'], message)
-        when Line::Bot::Event::MessageType::Image, Line::Bot::Event::MessageType::Video
-          response = client.get_message_content(event.message['id'])
-          tf = Tempfile.open("content")
-          tf.write(response.body)
         end
       end
     }

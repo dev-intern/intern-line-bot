@@ -53,8 +53,8 @@ class WebhookController < ApplicationController
         when Line::Bot::Event::MessageType::Text
           # result = fortune.sort
           message = {
-            type: 'text',
-            text: fortune.sort
+            type: 'hash',
+            hash: fortune.sort
           }
           client.reply_message(event['replyToken'], message)
         end

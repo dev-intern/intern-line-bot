@@ -53,7 +53,7 @@ class WebhookController < ApplicationController
         when Line::Bot::Event::MessageType::Text
           result = "今日のランキングだよ！︎"
           (1..12).each do |n|
-            result << "¥n#{n}位¥t#{fortune[n]}"
+            result << "¥n#{n}位¥t#{fortune[n.to_sym]}"
           end
           puts result
           # message = {

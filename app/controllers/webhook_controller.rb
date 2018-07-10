@@ -93,7 +93,7 @@ class WebhookController < ApplicationController
             constellation = event.message['text']
             cookie = fortune(0, date)
             all_contents = cookie[:"#{constellation}"]
-            result = "#{constellation}の運勢\n順位:\t#{all_contents[:"rank"]}\n#{all_contents[:"content"]}\nラッキーアイテム:\t#{all_contents[:"item"]}"
+            result = "#{constellation}の運勢\n順位:\t#{all_contents[:"rank"]}位\n#{all_contents[:"content"]}\nラッキーアイテム:\t#{all_contents[:"item"]}"
           else
             result = "\"ランキング\"か星座(漢字)を教えてね"
           end

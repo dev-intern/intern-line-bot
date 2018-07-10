@@ -15,9 +15,10 @@ class WebhookController < ApplicationController
   
   
   def fortune
+    url = "http://api.jugemkey.jp/api/horoscope/free/"
     today = Date.today.strftime('%Y/%m/%d')
     
-    fortune_url = "http://api.jugemkey.jp/api/horoscope/free/#{today}"
+    fortune_url = "#{url}#{today}"
 
     uri = URI.parse(fortune_url)
     http = Net::HTTP.new(uri.host, uri.port)
@@ -28,7 +29,7 @@ class WebhookController < ApplicationController
     api_response = JSON.parse(res.body)
     
     ranking = {}
-    api_response["horoscope"]["#{today}"].each do |index|
+    api_response["horoscope"][today].each do |index|
       ranking[index["rank"].to_s.to_sym] = index["sign"]
     end
     

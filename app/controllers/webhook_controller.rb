@@ -56,10 +56,10 @@ class WebhookController < ApplicationController
             result << "¥n#{n}位¥t#{fortune[n.to_s.to_sym]}"
           end
           puts result
-          # message = {
-          #   type: 'hash',
-          #   text: fortune.sort
-          # }
+          message = {
+            type: 'text',
+            text: result
+          }
           client.reply_message(event['replyToken'], message)
         end
       end

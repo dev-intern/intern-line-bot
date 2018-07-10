@@ -14,11 +14,11 @@ class WebhookController < ApplicationController
   end
   
   
-  def fortune
+  def fortune(rank_frag, period)
     url = "http://api.jugemkey.jp/api/horoscope/free/"
-    today = Date.today.strftime('%Y/%m/%d')
+    date = Date.period.strftime('%Y/%m/%d')
     
-    fortune_url = "#{url}#{today}"
+    fortune_url = "#{url}#{date}"
 
     uri = URI.parse(fortune_url)
     http = Net::HTTP.new(uri.host, uri.port)
@@ -28,9 +28,19 @@ class WebhookController < ApplicationController
     res = http.request(req)
     api_response = JSON.parse(res.body)
     
-    ranking = {}
-    api_response["horoscope"]["#{today}"].each do |index|
-      ranking[index["rank"].to_s.to_sym] = index["sign"]
+    if rank_frag == 1 then
+      ranking = {}
+      api_response["horoscope"]["#{date}"].each do |index|
+        ranking[index["rank"].to_s.to_sym] = index["sign"]
+      end
+    else
+      ranking = {}
+      api_response["horoscope"]["#{date}"].each do |index|
+        ranking[index["sign"].to_sym] = {}
+        ranking[index["sign"].to_sym][:"rank"] = index["rank"]
+        ranking[index["sign"].to_sym][:"content"] = index["content"]
+        ranking[index["sign"].to_sym][:"item"] = index["item"]
+      end
     end
     
     return ranking
@@ -53,16 +63,27 @@ class WebhookController < ApplicationController
         case event.type
         when Line::Bot::Event::MessageType::Text
           choice = ["牡羊座", "牡牛座", "双子座", "蟹座", "獅子座", "乙女座", "天秤座", "蠍座", "射手座", "山羊座", "水瓶座", "魚座"]
+          if event.message['text'].include?("昨日") then
+            date = yesterday
+          elsif event.message['text'].include?("明日") then
+            date = tommorow
+          else
+            date = today
+          end
           if event.message['text'].include?("ランキング") then
-            cookie = fortune
-            result = "今日のランキングだよ！︎"
+            period = Date.date.strftime("%m月%d日")
+            cookie = fortune(1, date)
+            result = "#{period}のランキングだよ！︎"
             (1..12).each do |n|
               result << "\n#{n}位\t#{cookie[n.to_s.to_sym]}"
             end
-          elsif choice.include?(event.message['text']) then
-            result = "星座だね"
+          elsif event.message['text'].in?(choice) then
+            constellation = event.message['text']
+            cookie = fortune(0, date)
+            all_contents = cookie[:"#{constellation}"]
+            result = "#{constellation}の運勢\n順位:\t#{all_contents[:"rank"]}\n#{all_contents[:"content"]}\nラッキーアイテム:\t#{all_contents[:"item"]}"
           else
-            result = "ランキングのことしか分からないよ"
+            result = "\"ランキング\"か星座(漢字)を教えてね"
           end
           message = {
             type: 'text',

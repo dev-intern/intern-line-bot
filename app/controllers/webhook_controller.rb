@@ -52,9 +52,10 @@ class WebhookController < ApplicationController
         case event.type
         when Line::Bot::Event::MessageType::Text
           if event.message['text'].include?("ランキング") then
+            cookie = fortune
             result = "今日のランキングだよ！︎"
             (1..12).each do |n|
-              result << "\n#{n}位\t#{fortune[n.to_s.to_sym]}"
+              result << "\n#{n}位\t#{cookie[n.to_s.to_sym]}"
             end
           else
             result = "ランキングのことしか分からないよ"

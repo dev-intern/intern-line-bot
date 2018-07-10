@@ -26,17 +26,13 @@ class WebhookController < ApplicationController
     
     res = http.request(req)
     api_response = JSON.parse(res.body)
+    
     ranking = {}
     api_response["horoscope"]["#{today}"].each do |index|
-      puts ranking[index["sign"].to_sym] = index["rank"]
+      ranking[index["rank"].to_sym] = index["sign"]
     end
-    # return ranking
-    # puts api_response["horoscope"].dig(:#{today}, :sign)
-      # if key == #{today} then
-      #   puts value["sign"], value["rank"]
-      # end
-      # daily["2018/07/9"].each do |item|
-      # puts item['sign'], item['rank']
+    
+    return ranking
     
   end
   
@@ -55,9 +51,10 @@ class WebhookController < ApplicationController
       when Line::Bot::Event::Message
         case event.type
         when Line::Bot::Event::MessageType::Text
+          # result = fortune.sort
           message = {
             type: 'text',
-            text: fortune
+            text: fortune.sort
           }
           client.reply_message(event['replyToken'], message)
         end

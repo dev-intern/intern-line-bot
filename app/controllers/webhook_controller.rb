@@ -29,7 +29,7 @@ class WebhookController < ApplicationController
     
     ranking = {}
     api_response["horoscope"]["#{today}"].each do |index|
-      ranking[index["rank"].to_sym] = index["sign"]
+      ranking[index["rank"].to_s.to_sym] = index["sign"]
     end
     
     return ranking

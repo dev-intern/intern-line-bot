@@ -16,11 +16,11 @@ class WebhookController < ApplicationController
   
   def fortune(rank_frag, period)
     url = "http://api.jugemkey.jp/api/horoscope/free/"
-    today = Date.today
+    date = Date.today
     if period == "yesterday" then
-      date = today.yesterday
+      date = date.yesterday
     elsif period == "tomorrow" then
-      date = today.tomorrow
+      date = date.tomorrow
     end
     date = date.strftime('%Y/%m/%d')
     

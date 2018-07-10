@@ -16,15 +16,15 @@ class WebhookController < ApplicationController
   
   def fortune(rank_frag, period)
     url = "http://api.jugemkey.jp/api/horoscope/free/"
-    date = Date.today
-    if date == "yesterday" then
-      date = date.yesterday
-    elsif date == "tomorrow" then
-      date = date.tomorrow
+    today = Date.today
+    if period == "yesterday" then
+      date = today.yesterday
+    elsif period == "tomorrow" then
+      date = today.tomorrow
     end
-    today = date.strftime('%Y/%m/%d')
+    date = date.strftime('%Y/%m/%d')
     
-    fortune_url = "#{url}#{today}"
+    fortune_url = "#{url}#{date}"
 
     uri = URI.parse(fortune_url)
     http = Net::HTTP.new(uri.host, uri.port)
@@ -36,12 +36,12 @@ class WebhookController < ApplicationController
     
     if rank_frag == 1 then
       ranking = {}
-      api_response["horoscope"]["#{today}"].each do |index|
+      api_response["horoscope"]["#{date}"].each do |index|
         ranking[index["rank"].to_s.to_sym] = index["sign"]
       end
     else
       ranking = {}
-      api_response["horoscope"]["#{today}"].each do |index|
+      api_response["horoscope"]["#{date}"].each do |index|
         ranking[index["sign"].to_sym] = {}
         ranking[index["sign"].to_sym][:"rank"] = index["rank"]
         ranking[index["sign"].to_sym][:"content"] = index["content"]

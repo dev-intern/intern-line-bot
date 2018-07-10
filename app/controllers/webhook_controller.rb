@@ -19,7 +19,7 @@ class WebhookController < ApplicationController
     date = Date.today
     if date == "yesterday" then
       date = date.yesterday
-    else
+    elsif date == "tomorrow" then
       date = date.tomorrow
     end
     today = date.strftime('%Y/%m/%d')
@@ -77,13 +77,13 @@ class WebhookController < ApplicationController
             date = "today"
           end
           if event.message['text'].include?("ランキング") then
+            period = Date.today
             if date == "yesterday" then
-              period = Date.today.yesterday.strftime("%m月%d日")
+              period = period.yesterday
             elsif date == "tomorrow" then
-              period = Date.today.tomorrow.strftime("%m月%d日")
-            else
-              period = Date.today.strftime("%m月%d日")
+              period = period.tomorrow
             end
+            period = period.strftime("%m月%d日")
             cookie = fortune(1, date)
             result = "#{period}のランキングだよ！︎"
             (1..12).each do |n|
@@ -95,7 +95,7 @@ class WebhookController < ApplicationController
             all_contents = cookie[:"#{constellation}"]
             result = "#{constellation}の運勢\n順位:\t#{all_contents[:"rank"]}位\n#{all_contents[:"content"]}\nラッキーアイテム:\t#{all_contents[:"item"]}"
           else
-            result = "\"ランキング\"か星座(漢字)を教えてね"
+            result = "\"ランキング\"か星座(漢字)を教えてね！\nランキングは前後1日表示できるよ。"
           end
           message = {
             type: 'text',

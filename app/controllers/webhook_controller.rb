@@ -51,13 +51,16 @@ class WebhookController < ApplicationController
       when Line::Bot::Event::Message
         case event.type
         when Line::Bot::Event::MessageType::Text
-          result = fortune.sort
+          result = "今日のランキングだよ！︎"
+          (1..12).each do |n|
+            result << "¥n#{n}位¥t#{fortune[:n]}"
+          end
           puts result
           # message = {
           #   type: 'hash',
           #   text: fortune.sort
           # }
-          client.reply_message(event['replyToken'], result)
+          client.reply_message(event['replyToken'], message)
         end
       end
     }

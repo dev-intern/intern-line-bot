@@ -59,7 +59,7 @@ class WebhookController < ApplicationController
             (1..12).each do |n|
               result << "\n#{n}位\t#{cookie[n.to_s.to_sym]}"
             end
-          elsif name.in?(choice) then
+          elsif event.message['text'].in?(choice) then
             result = "星座だね"
           else    
             result = "ランキングのことしか分からないよ"

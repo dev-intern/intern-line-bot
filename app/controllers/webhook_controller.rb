@@ -53,6 +53,7 @@ class WebhookController < ApplicationController
         case event.type
         when Line::Bot::Event::MessageType::Text
           choice = ["牡羊座", "牡牛座", "双子座", "蟹座", "獅子座", "乙女座", "天秤座", "蠍座", "射手座", "山羊座", "水瓶座", "魚座"]
+          puts event.message['text']
           if event.message['text'].include?("ランキング") then
             cookie = fortune
             result = "今日のランキングだよ！︎"
@@ -61,7 +62,7 @@ class WebhookController < ApplicationController
             end
           elsif choice.include?(event.message['text']) then
             result = "星座だね"
-          else    
+          else
             result = "ランキングのことしか分からないよ"
           end
           message = {

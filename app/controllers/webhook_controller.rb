@@ -51,9 +51,13 @@ class WebhookController < ApplicationController
       when Line::Bot::Event::Message
         case event.type
         when Line::Bot::Event::MessageType::Text
-          result = "今日のランキングだよ！︎"
-          (1..12).each do |n|
-            result << "\n#{n}位\t#{fortune[n.to_s.to_sym]}"
+          if event.message['text'].include?("ランキング") then
+            result = "今日のランキングだよ！︎"
+            (1..12).each do |n|
+              result << "\n#{n}位\t#{fortune[n.to_s.to_sym]}"
+            end
+          else
+            result = "ランキングのことしか分からないよ"
           end
           message = {
             type: 'text',

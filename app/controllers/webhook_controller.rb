@@ -52,6 +52,7 @@ class WebhookController < ApplicationController
         case event.type
         when Line::Bot::Event::MessageType::Text
           result = fortune.sort
+          puts result
           # message = {
           #   type: 'hash',
           #   text: fortune.sort

@@ -15,9 +15,10 @@ class WebhookController < ApplicationController
   
   
   def fortune
+    url = "http://api.jugemkey.jp/api/horoscope/free/"
     today = Date.today.strftime('%Y/%m/%d')
     
-    fortune_url = "http://api.jugemkey.jp/api/horoscope/free/#{today}"
+    fortune_url = "#{url}#{today}"
 
     uri = URI.parse(fortune_url)
     http = Net::HTTP.new(uri.host, uri.port)
@@ -58,7 +59,7 @@ class WebhookController < ApplicationController
             (1..12).each do |n|
               result << "\n#{n}位\t#{cookie[n.to_s.to_sym]}"
             end
-          elsif choice.each {|pattern| event.message['text'].include?(pattern)} then
+          elsif name.in?(choice) then
             result = "星座だね"
           else    
             result = "ランキングのことしか分からないよ"
